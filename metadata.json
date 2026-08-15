@@ -1,0 +1,6 @@
+{
+  "name": "Retro Roulette",
+  "description": "Minimalist casino application featuring Poker, Blackjack, Roulette, and in-app cashier bank.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

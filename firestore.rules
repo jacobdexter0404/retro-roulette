@@ -1,0 +1,37 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidLeaderboardUser(data) {
+      return data.keys().hasAll(['userId', 'username', 'avatar', 'balance', 'biggestWin', 'totalWins', 'netProfit', 'updatedAt'])
+        && data.keys().size() == 8
+        && data.userId is string && data.userId.size() <= 128
+        && data.username is string && data.username.size() >= 1 && data.username.size() <= 30
+        && data.avatar is string && data.avatar.size() >= 1 && data.avatar.size() <= 10
+        && data.balance is number
+        && data.biggestWin is number
+        && data.totalWins is number
+        && data.netProfit is number
+        && data.updatedAt is string && data.updatedAt.size() <= 50;
+    }
+
+    // Public global leaderboard
+    match /leaderboard/{userId} {
+      allow get, list: if true;
+      allow create, update: if isValidId(userId)
+        && isValidLeaderboardUser(request.resource.data)
+        && request.resource.data.userId == userId;
+      allow delete: if false;
+    }
+  }
+}

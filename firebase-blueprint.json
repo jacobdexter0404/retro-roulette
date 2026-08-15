@@ -1,0 +1,54 @@
+{
+  "entities": {
+    "LeaderboardUser": {
+      "title": "Leaderboard User",
+      "description": "Global user profile tracking game stats, balance, username, and avatar icon",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Unique user ID",
+          "maxLength": 128
+        },
+        "username": {
+          "type": "string",
+          "description": "Custom player display name",
+          "maxLength": 30
+        },
+        "avatar": {
+          "type": "string",
+          "description": "Selected avatar emoji or icon identifier",
+          "maxLength": 10
+        },
+        "balance": {
+          "type": "number",
+          "description": "Player's current casino chip balance"
+        },
+        "biggestWin": {
+          "type": "number",
+          "description": "Single highest payout won across games"
+        },
+        "totalWins": {
+          "type": "number",
+          "description": "Total career winning hands/spins"
+        },
+        "netProfit": {
+          "type": "number",
+          "description": "Total career net profit or loss"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last stats sync",
+          "maxLength": 50
+        }
+      },
+      "required": ["userId", "username", "avatar", "balance", "biggestWin", "totalWins", "netProfit", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/leaderboard/{userId}": {
+      "schema": "LeaderboardUser",
+      "description": "Collection of public player profiles for the real-time global leaderboard"
+    }
+  }
+}
